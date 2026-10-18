@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuizStorm — School Quiz Game</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b31;--panel2:#192440;--text:#f5f7ff;--muted:#aab5d2;--line:#2b3859;--cyan:#62e6f5;--violet:#a58bff;--green:#52e0a1;--red:#ff7188;--gold:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#202858 0%,transparent 38%),radial-gradient(ellipse at 100% 20%,#173c51 0%,transparent 28%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,select,input{font:inherit}button{cursor:pointer}.wrap{width:min(1120px,100%);margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#10152b;font-size:25px;font-weight:1000;box-shadow:0 8px 30px #62e6f533}.brand h1{font-size:clamp(20px,3vw,28px);margin:0;letter-spacing:-.8px}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px;white-space:nowrap}.hero{text-align:center;margin:26px 0 28px}.eyebrow{color:var(--cyan);font-size:12px;letter-spacing:2px;font-weight:800;text-transform:uppercase}.hero h2{font-size:clamp(32px,6vw,56px);line-height:1.02;letter-spacing:-2px;margin:12px 0}.hero h2 span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:650px;margin:0 auto;color:var(--muted);line-height:1.6}.panel{background:linear-gradient(160deg,#17213b,#11182c);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,3vw,30px);box-shadow:0 22px 70px #0003}.setup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.field label,.section-label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:800;margin-bottom:9px}.field select,.field input{width:100%;border:1px solid var(--line);border-radius:12px;background:#0d1427;color:var(--text);padding:13px 14px;outline:none}.field select:focus,.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #62e6f51c}.subjects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.subject{border:1px solid var(--line);background:#0d1427;color:var(--text);padding:14px 8px;border-radius:15px;text-align:center;transition:.15s;min-height:83px}.subject .emoji{display:block;font-size:25px;margin-bottom:7px}.subject strong{font-size:12px}.subject.selected{border-color:var(--cyan);background:#173145;box-shadow:inset 0 0 0 1px var(--cyan)}.subject:focus-visible,.choice:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mode{border:1px solid var(--line);background:#0d1427;color:var(--text);border-radius:14px;padding:13px;text-align:left}.mode strong{display:block;margin-bottom:5px}.mode small{color:var(--muted);line-height:1.35}.mode.selected{border-color:var(--violet);background:#241f45}.start{margin-top:22px;width:100%;border:0;border-radius:14px;padding:16px;font-weight:900;color:#10152b;background:linear-gradient(90deg,var(--cyan),#a7a1ff);box-shadow:0 8px 28px #62e6f526}.start:hover{filter:brightness(1.06);transform:translateY(-1px)}.note{text-align:center;color:var(--muted);font-size:12px;margin:13px 0 0}.hidden{display:none!important}.game-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:20px}.stat{background:#0d1427;border:1px solid var(--line);border-radius:15px;padding:13px}.stat span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}.stat strong{display:block;font-size:24px;margin-top:5px}.score-pos{color:var(--green)}.score-neg{color:var(--red)}.progress-line{height:7px;background:#26314e;border-radius:20px;overflow:hidden;margin:12px 0 22px}.progress-line div{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));width:0%;transition:width .25s}.q-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tag{border-radius:999px;background:#202c4a;color:#c9d5f6;font-size:11px;padding:6px 10px;font-weight:800}.question{font-size:clamp(21px,3.4vw,32px);line-height:1.3;letter-spacing:-.5px;margin:0 0 22px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice{border:1px solid var(--line);border-radius:15px;background:#10182c;color:var(--text);padding:17px;display:flex;align-items:center;gap:12px;text-align:left;min-height:72px;transition:.15s}.letter{width:31px;height:31px;flex:0 0 31px;border-radius:10px;display:grid;place-items:center;background:#263452;color:#dbe5ff;font-weight:900}.choice:hover:not(:disabled){border-color:var(--cyan);transform:translateY(-2px)}.choice.correct{border-color:var(--green);background:#10392f}.choice.correct .letter{background:var(--green);color:#09271f}.choice.wrong{border-color:var(--red);background:#3a1a2a}.choice.wrong .letter{background:var(--red);color:#32101b}.choice:disabled{cursor:default}.feedback{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;line-height:1.5;background:#0d1427}.feedback.good{border-color:#277f61}.feedback.bad{border-color:#884054}.feedback strong{display:block;margin-bottom:4px}.nextrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:17px}.smallbtn{border:1px solid var(--line);border-radius:12px;background:#18233d;color:var(--text);padding:11px 14px;font-weight:800}.nextbtn{border:0;border-radius:12px;background:var(--cyan);color:#071522;padding:12px 19px;font-weight:900}.result{text-align:center;padding:10px 0}.result-icon{font-size:58px}.result h2{font-size:clamp(28px,5vw,42px);margin:10px 0}.result p{color:var(--muted);line-height:1.6}.final-score{font-size:clamp(44px,8vw,70px);font-weight:1000;letter-spacing:-2px;background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;margin:14px 0}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.result-stats .stat strong{font-size:22px}.footer{text-align:center;color:#7f8baa;font-size:12px;padding:24px 8px 6px;line-height:1.7}.footer strong{color:#bac7e8}.toast{color:var(--gold);font-size:13px;min-height:18px;margin-top:9px}
+@media(max-width:650px){.wrap{padding:14px}.top{align-items:flex-start}.pill{font-size:10px}.hero{margin:22px 0}.setup-grid{grid-template-columns:1fr;gap:14px}.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:60px;padding:13px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:20px}.panel{border-radius:20px}.result-stats .stat strong{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><div class="logo">Q</div><div><h1>QuizStorm</h1><p>Think fast. Learn more. Level up.</p></div></div>
+ <div class="pill">📚 Grades 1–9 · Phone + Laptop</div>
+</header>
+<section id="setup">
+ <div class="hero"><div class="eyebrow">Your classroom challenge</div><h2>Ready to test your <span>brain?</span></h2><p>Choose your grade, subject, difficulty and game mode. Every question has four answers. Correct answers earn <b>+100</b> points; wrong answers cost <b>100</b>.</p></div>
+ <div class="panel">
+  <div class="section-label">01 — Choose your subject</div>
+  <div class="subjects" id="subjects">
+   <button class="subject selected" data-subject="English"><span class="emoji">📖</span><strong>English</strong></button>
+   <button class="subject" data-subject="Math"><span class="emoji">➗</span><strong>Math</strong></button>
+   <button class="subject" data-subject="Physics"><span class="emoji">⚡</span><strong>Physics</strong></button>
+   <button class="subject" data-subject="Biology"><span class="emoji">🧬</span><strong>Biology</strong></button>
+   <button class="subject" data-subject="Chemistry"><span class="emoji">🧪</span><strong>Chemistry</strong></button>
+   <button class="subject" data-subject="Business"><span class="emoji">📈</span><strong>Business</strong></button>
+   <button class="subject" data-subject="ICT"><span class="emoji">💻</span><strong>ICT</strong></button>
+  </div>
+  <div style="height:24px"></div>
+  <div class="section-label">02 — Set up your challenge</div>
+  <div class="setup-grid">
+   <div class="field"><label for="grade">School grade</label><select id="grade"></select></div>
+   <div class="field"><label for="difficulty">Difficulty</label><select id="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+   <div class="field"><label for="time">Time limit</label><select id="time"><option value="60">1 minute</option><option value="180" selected>3 minutes</option><option value="300">5 minutes</option><option value="600">10 minutes</option><option value="0">No timer</option></select></div>
+   <div class="field"><label for="rounds">Questions per round</label><select id="rounds"><option value="10" selected>10 questions</option><option value="15">15 questions</option><option value="20">20 questions</option></select></div>
+  </div>
+  <div style="height:24px"></div>
+  <div class="section-label">03 — Choose a game mode</div>
+  <div class="mode-grid" id="modes">
+   <button class="mode selected" data-mode="classic"><strong>🏆 Classic Quiz</strong><small>Play a full round and aim for the highest score.</small></button>
+   <button class="mode" data-mode="sprint"><strong>⚡ Speed Sprint</strong><small>Race against the clock. A quick answer is a smart answer.</small></button>
+   <button class="mode" data-mode="practice"><strong>🌱 Practice Mode</strong><small>No timer. Learn from explanations after each answer.</small></button>
+  </div>
+  <button class="start" id="start">START GAME&nbsp; →</button>
+  <div class="note">Original Cambridge-style practice questions — not official Cambridge exam questions.</div>
+  <div class="toast" id="setupMsg" role="status"></div>
+ </div>
+</section>
+<section id="game" class="hidden">
+ <div class="game-head"><button class="smallbtn" id="quit">← Settings</button><span class="pill" id="gameInfo">Grade 5 · Math · Medium</span></div>
+ <div class="stats">
+  <div class="stat"><span>Score</span><strong id="score" class="score-pos">0</strong></div>
+  <div class="stat"><span>Question</span><strong id="qcount">1 / 10</strong></div>
+  <div class="stat"><span>Time left</span><strong id="timer">03:00</strong></div>
+ </div>
+ <div class="progress-line"><div id="progress"></div></div>
+ <div class="panel">
+  <div class="q-meta"><span class="tag" id="subjectTag">MATH</span><span class="tag" id="gradeTag">GRADE 5</span><span class="tag" id="diffTag">MEDIUM</span></div>
+  <h2 class="question" id="question">Question goes here</h2>
+  <div class="choices" id="choices"></div>
+  <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
+  <div class="nextrow"><span class="pill" id="streak">🔥 Streak: 0</span><button class="nextbtn hidden" id="next">Next question →</button></div>
+ </div>
+</section>
+<section id="results" class="hidden">
+ <div class="panel result">
+  <div class="result-icon" id="resultIcon">🏆</div><div class="eyebrow">Round complete</div><h2 id="resultTitle">Amazing effort!</h2>
+  <p id="resultText"></p><div class="final-score" id="finalScore">1000</div><p>FINAL SCORE</p>
+  <div class="result-stats"><div class="stat"><span>Correct</span><strong id="correctN">0</strong></div><div class="stat"><span>Incorrect</span><strong id="wrongN">0</strong></div><div class="stat"><span>Accuracy</span><strong id="accuracy">0%</strong></div></div>
+  <button class="start" id="again">PLAY AGAIN ↻</button><button class="smallbtn" style="margin-top:10px;width:100%" id="home">Change settings</button>
+ </div>
+</section>
+<footer class="footer">Made for curious minds · Cambridge-style learning practice<br><strong>Created by Yousef Islam, Hamza Mahmoud, Zyad Mohammed, Aser, and Talal Tutanji</strong></footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let subject='English',mode='classic',questions=[],index=0,score=0,correct=0,wrong=0,streak=0,bestStreak=0,seconds=180,timerId=null,answered=false,settings={};
+for(let i=1;i<=9;i++){const o=document.createElement('option');o.value=i;o.textContent=`Grade ${i}`;$('grade').appendChild(o)}
+document.querySelectorAll('.subject').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.subject').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');subject=b.dataset.subject}));
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.mode').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');mode=b.dataset.mode;if(mode==='practice'){$('time').value='0';$('time').disabled=true}else{$('time').disabled=false;if($('time').value==='0')$('time').value=mode==='sprint'?'60':'180'}}));
+const bank={
+English:[
+[1,3,'Easy','Which word is a noun?',['quickly','happiness','under','blue'],'happiness','A noun names a person, place, thing or idea.'],
+[1,4,'Easy','Choose the correct plural of “child”.',['childs','childes','children','childrens'],'children','“Children” is the irregular plural of “child”.'],
+[2,5,'Medium','Which sentence uses an apostrophe correctly?',['The dogs tail wagged.','The dog’s tail wagged.','The dogs’ tail wagged.','The dogs tail’s wagged.'],'The dog’s tail wagged.','The apostrophe shows that the tail belongs to one dog.'],
+[3,6,'Medium','What is the main purpose of an adjective?',['To describe a noun','To join two sentences','To show an action','To replace punctuation'],'To describe a noun','Adjectives give information about nouns, such as size, colour or quality.'],
+[4,7,'Hard','Which phrase is an example of a metaphor?',['As cold as ice','The wind whispered','Time is a thief','The bell rang loudly'],'Time is a thief','A metaphor says one thing is another to suggest a comparison.'],
+[5,8,'Medium','Which word is closest in meaning to “reluctant”?',['Eager','Unwilling','Certain','Cheerful'],'Unwilling','Reluctant means hesitant or unwilling to do something.'],
+[6,9,'Hard','In a persuasive text, what is the strongest role of evidence?',['To decorate the page','To make every sentence longer','To support a claim with reasons or facts','To replace the conclusion'],'To support a claim with reasons or facts','Evidence makes an argument more convincing and credible.'],
+[3,7,'Easy','Which punctuation mark usually ends a direct question?',['Full stop','Comma','Question mark','Colon'],'Question mark','Direct questions usually end with a question mark.'],
+[5,9,'Hard','What is dramatic irony?',['A joke with no audience','When the audience knows something a character does not','A story told in rhyme','A surprising setting'],'When the audience knows something a character does not','Dramatic irony occurs when the audience has information that a character lacks.'],
+[2,6,'Medium','Which is the correct past tense of “teach”?',['Teached','Taught','Teaching','Taughted'],'Taught','“Teach” has the irregular past-tense form “taught”.'],
+[1,4,'Easy','Which word is a verb in “Birds fly above the trees”?',['Birds','above','trees','fly'],'fly','A verb expresses an action or state; “fly” is the action.'],
+[4,8,'Medium','What does the prefix “mis-” usually mean?',['Again','Before','Wrongly or badly','Under'],'Wrongly or badly','For example, “misread” means to read something incorrectly.']],
+Math:[
+[1,3,'Easy','What is 8 + 7?',['14','15','16','17'],'15','Adding 8 and 7 gives 15.'],
+[1,4,'Easy','What is 6 × 4?',['10','20','24','28'],'24','Six groups of four make 24.'],
+[2,5,'Medium','A rectangle is 8 cm long and 3 cm wide. What is its perimeter?',['11 cm','22 cm','24 cm','48 cm'],'22 cm','Perimeter = 2 × (length + width) = 2 × 11 = 22 cm.'],
+[3,6,'Medium','What is 3/4 written as a decimal?',['0.25','0.34','0.5','0.75'],'0.75','Divide 3 by 4 to get 0.75.'],
+[4,7,'Hard','Solve: 3x + 5 = 20.',['x = 3','x = 5','x = 7','x = 25'],'x = 5','Subtract 5 to get 3x = 15, then divide by 3.'],
+[5,8,'Medium','What is the area of a triangle with base 10 cm and height 6 cm?',['16 cm²','30 cm²','60 cm²','32 cm²'],'30 cm²','Triangle area = ½ × base × height = ½ × 10 × 6 = 30 cm².'],
+[6,9,'Hard','A fair six-sided die is rolled. What is the probability of rolling an even number?',['1/6','1/3','1/2','2/3'],'1/2','Three outcomes (2, 4, 6) out of six are even, so 3/6 = 1/2.'],
+[3,7,'Easy','What is 25% of 80?',['10','15','20','25'],'20','25% is one quarter; 80 ÷ 4 = 20.'],
+[5,9,'Hard','Simplify 2a + 3a − a.',['4a','5a','6a','a'],'4a','Combine like terms: 2a + 3a − a = 4a.'],
+[4,8,'Medium','What is the mean of 4, 6, 8 and 10?',['6','7','8','28'],'7','The sum is 28; divide by 4 values to get 7.'],
+[2,5,'Medium','Which fraction is equivalent to 2/3?',['3/5','4/6','5/6','2/6'],'4/6','Multiply the numerator and denominator by 2: 2/3 = 4/6.'],
+[6,9,'Hard','A price rises from $40 to $50. What is the percentage increase?',['10%','20%','25%','50%'],'25%','The increase is $10; 10 ÷ 40 × 100 = 25%.']],
+Physics:[
+[1,3,'Easy','Which object is a source of light?',['The Moon','A mirror','The Sun','A book'],'The Sun','The Sun produces its own light; the Moon reflects sunlight.'],
+[2,5,'Medium','Which unit is used to measure force?',['Joule','Newton','Watt','Metre'],'Newton','Force is measured in newtons (N).'],
+[3,6,'Medium','What happens to a shadow when an object moves closer to a light source, with the screen fixed?',['It always disappears','It often becomes larger','It becomes a sound','It changes into a reflection'],'It often becomes larger','An object closer to a point-like light source blocks a wider spread of rays.'],
+[4,7,'Hard','Which equation links speed, distance and time?',['Speed = distance ÷ time','Speed = time ÷ distance','Distance = speed ÷ time','Time = distance × speed'],'Speed = distance ÷ time','Average speed is calculated by dividing distance travelled by time taken.'],
+[5,8,'Medium','In a series circuit, what happens if one bulb breaks?',['Other bulbs get brighter','All bulbs go out','Only the battery goes out','Current doubles'],'All bulbs go out','A break opens the single path, stopping current throughout the series circuit.'],
+[6,9,'Hard','Which particle has a negative electric charge?',['Proton','Neutron','Electron','Nucleus'],'Electron','Electrons carry negative charge; protons are positive and neutrons are neutral.'],
+[1,4,'Easy','Which material is usually a good electrical conductor?',['Rubber','Copper','Plastic','Dry wood'],'Copper','Copper is a metal and allows electric charge to flow easily.'],
+[3,7,'Medium','What is the unit of energy?',['Watt','Newton','Joule','Ampere'],'Joule','Energy is measured in joules (J).'],
+[5,9,'Hard','Why does a ray of light change direction when entering glass from air?',['It stops travelling','Its speed changes','Its colour always changes','Gravity pulls it down'],'Its speed changes','Refraction occurs because light changes speed when entering a different medium.'],
+[2,6,'Medium','Which transfer of heat can occur through a vacuum?',['Conduction','Convection','Radiation','None of them'],'Radiation','Radiation can travel through empty space as electromagnetic waves.'],
+[4,8,'Hard','What is the resultant force when 12 N right and 7 N left act on an object?',['19 N right','5 N right','5 N left','0 N'],'5 N right','Opposite forces subtract: 12 − 7 = 5 N to the right.']],
+Biology:[
+[1,3,'Easy','Which part of a plant usually absorbs water from the soil?',['Flower','Roots','Fruit','Petals'],'Roots','Roots absorb water and minerals from the soil.'],
+[2,5,'Medium','Which gas do plants take in for photosynthesis?',['Oxygen','Nitrogen','Carbon dioxide','Hydrogen'],'Carbon dioxide','Plants use carbon dioxide and water to make glucose using light energy.'],
+[3,6,'Medium','Which organ pumps blood around the human body?',['Lung','Brain','Kidney','Heart'],'Heart','The heart contracts to move blood through the circulatory system.'],
+[4,7,'Hard','What is the main role of red blood cells?',['Digest food','Transport oxygen','Make hormones','Filter urine'],'Transport oxygen','Haemoglobin in red blood cells binds to oxygen for transport.'],
+[5,8,'Medium','Where does most photosynthesis take place in a leaf?',['Chloroplasts','Nucleus only','Cell wall','Vacuole only'],'Chloroplasts','Chloroplasts contain chlorophyll, which absorbs light energy.'],
+[6,9,'Hard','Which process releases energy from glucose in cells?',['Osmosis','Respiration','Transpiration','Pollination'],'Respiration','Cellular respiration releases usable energy from glucose.'],
+[1,4,'Easy','Which of these is a mammal?',['Frog','Salmon','Dolphin','Lizard'],'Dolphin','Dolphins are mammals: they breathe air and feed their young with milk.'],
+[3,7,'Medium','What is the function of the small intestine?',['Pump blood','Absorb digested nutrients','Exchange air in lungs','Control balance'],'Absorb digested nutrients','The small intestine absorbs nutrients through its lining into the blood.'],
+[5,9,'Hard','What is a gene?',['A type of tissue','A section of DNA carrying information','An organelle that makes energy','A whole ecosystem'],'A section of DNA carrying information','Genes are DNA sequences that influence inherited characteristics.'],
+[2,6,'Medium','Which structure controls what enters and leaves a cell?',['Cell membrane','Cell wall only','Cytoplasm','Ribosome'],'Cell membrane','The cell membrane is selectively permeable.'],
+[4,8,'Hard','In a food chain, what is a producer?',['An animal that hunts','An organism that makes its own food','A decomposer only','Any top predator'],'An organism that makes its own food','Plants and algae are producers because they make organic food, usually by photosynthesis.']],
+Chemistry:[
+[1,3,'Easy','Which of these is a solid at room temperature?',['Steam','Oxygen gas','Ice','Water vapour'],'Ice','Ice is solid water at ordinary room conditions.'],
+[2,5,'Medium','Which method separates sand from water?',['Filtration','Evaporation only','Magnetism','Chromatography'],'Filtration','The filter traps insoluble sand while water passes through.'],
+[3,6,'Medium','What is the chemical symbol for oxygen?',['Ox','O','Oy','Og'],'O','The chemical symbol for oxygen is O.'],
+[4,7,'Hard','What is formed when an acid reacts with a base?',['Only oxygen','Salt and water','Only hydrogen','Metal and carbon'],'Salt and water','Neutralisation between an acid and a base produces salt and water.'],
+[5,8,'Medium','Which particle is found in the nucleus and has no charge?',['Electron','Proton','Neutron','Ion'],'Neutron','Neutrons are neutral particles in the atomic nucleus.'],
+[6,9,'Hard','What does a pH of 2 indicate?',['Strongly acidic','Neutral','Weakly alkaline','Strongly alkaline'],'Strongly acidic','Values below 7 are acidic; a pH of 2 is strongly acidic.'],
+[1,4,'Easy','Which state of matter has a fixed shape and fixed volume?',['Gas','Liquid','Solid','Plasma only'],'Solid','A solid keeps its shape and volume under ordinary conditions.'],
+[3,7,'Medium','Which gas is produced when many metals react with dilute hydrochloric acid?',['Oxygen','Hydrogen','Carbon dioxide','Nitrogen'],'Hydrogen','Metal + acid commonly produces a salt and hydrogen gas.'],
+[5,9,'Hard','Why are noble gases generally unreactive?',['They have no electrons','Their outer electron shells are full','They are all liquids','They contain no protons'],'Their outer electron shells are full','A full outer shell makes them relatively stable and less likely to react.'],
+[2,6,'Medium','Which change is a chemical reaction?',['Ice melting','Paper being cut','Iron rusting','Water boiling'],'Iron rusting','Rusting forms new substances, including iron oxides.'],
+[4,8,'Hard','What is the formula for carbon dioxide?',['CO','CO₂','C₂O','O₂C₂'],'CO₂','One carbon atom combines with two oxygen atoms in carbon dioxide.']],
+Business:[
+[1,3,'Easy','Why might a shop keep a record of its sales?',['To forget what it sold','To understand how much it sells','To stop serving customers','To make products disappear'],'To understand how much it sells','Sales records help a business track performance and plan ahead.'],
+[2,5,'Medium','What is a customer?',['A person who buys goods or services','A type of tax','A factory machine','A business expense only'],'A person who buys goods or services','Customers purchase or use a business’s goods and services.'],
+[3,6,'Medium','What is profit?',['Costs minus revenue','Revenue minus total costs','All money borrowed','The number of employees'],'Revenue minus total costs','Profit is what remains when total costs are subtracted from revenue.'],
+[4,7,'Hard','Which is an example of a fixed cost?',['Packaging for each item','Raw materials for each product','Monthly shop rent','Commission per sale'],'Monthly shop rent','Rent is usually payable regardless of how many units are produced.'],
+[5,8,'Medium','What is market research used for?',['Learning about customers and competitors','Avoiding all customer feedback','Guaranteeing profit','Removing every competitor'],'Learning about customers and competitors','Research helps a business understand demand, preferences and competition.'],
+[6,9,'Hard','A business sells 80 items for $5 each. Its total costs are $260. What is its profit?',['$100','$140','$260','$400'],'$140','Revenue is 80 × $5 = $400; profit = $400 − $260 = $140.'],
+[1,4,'Easy','What is a product?',['Something a business sells','A business holiday','A bank account only','A customer complaint'],'Something a business sells','A product is a good or service offered to customers.'],
+[3,7,'Medium','Which is an example of a service?',['A haircut','A pencil','A chair','A notebook'],'A haircut','A service is an activity provided to a customer rather than a physical good.'],
+[5,9,'Hard','What is the purpose of a cash-flow forecast?',['To estimate money entering and leaving a business','To calculate exam marks','To design a logo only','To guarantee sales'],'To estimate money entering and leaving a business','Cash-flow forecasts help predict whether a business can pay its bills on time.'],
+[2,6,'Medium','Which is a sensible way to improve customer service?',['Ignore complaints','Listen and respond politely','Hide product information','Always delay replies'],'Listen and respond politely','Listening carefully and responding respectfully helps meet customer needs.']],
+ICT:[
+[1,3,'Easy','Which device is mainly used to type text into a computer?',['Monitor','Keyboard','Speaker','Printer'],'Keyboard','A keyboard is an input device used to enter letters, numbers and commands.'],
+[2,5,'Medium','What does CPU stand for?',['Central Processing Unit','Computer Power Utility','Central Print User','Control Program Upload'],'Central Processing Unit','The CPU processes instructions and coordinates computer operations.'],
+[3,6,'Medium','Which password is generally the strongest?',['123456','password','sam2020','River!Cloud8Tree'],'River!Cloud8Tree','Long, unique passwords with varied characters are harder to guess.'],
+[4,7,'Hard','What is the purpose of a spreadsheet formula?',['To calculate using cell values','To clean the keyboard','To increase screen brightness','To browse websites only'],'To calculate using cell values','Formulas perform calculations using values and cell references.'],
+[5,8,'Medium','What is phishing?',['A way to cool a computer','A scam that tries to trick people into revealing information','A file compression method','A programming language'],'A scam that tries to trick people into revealing information','Phishing messages imitate trusted sources to steal information or prompt unsafe actions.'],
+[6,9,'Hard','What does an IP address help identify?',['A network interface or device on a network','A document’s font','A computer’s screen size','A keyboard layout'],'A network interface or device on a network','IP addresses help route data to the correct network destination.'],
+[1,4,'Easy','Which is an output device?',['Mouse','Microphone','Monitor','Scanner'],'Monitor','A monitor displays visual output from a computer.'],
+[3,7,'Medium','Why should important files be backed up?',['To make them harder to find','To recover them if the original is lost or damaged','To use more battery','To remove all security'],'To recover them if the original is lost or damaged','A backup provides another copy in case of accidental deletion or device failure.'],
+[5,9,'Hard','Which statement best describes an algorithm?',['A sequence of steps to solve a problem','A type of computer screen','A wireless signal only','A computer virus'],'A sequence of steps to solve a problem','Algorithms define ordered steps for completing a task or solving a problem.'],
+[2,6,'Medium','What is the main purpose of an operating system?',['Manage hardware and software resources','Only create drawings','Only send emails','Replace all computer memory'],'Manage hardware and software resources','An operating system manages hardware, files, applications and user interaction.']]
+};
+function normalize(s){return s.toLowerCase().replace(/[^a-z0-9]/g,'')}
+function seededExtra(sub,grade,diff){
+ const extras=[];
+ if(sub==='Math'){
+  const n=grade+3, a=n+(diff==='Easy'?2:diff==='Hard'?7:4), b=grade+(diff==='Easy'?2:diff==='Hard'?5:3);
+  extras.push([grade,grade,diff,`Calculate ${a} × ${b}.`,[String(a*b+2),String(a*b),String(a+b),String(a*b-b)],String(a*b),`Multiply ${a} by ${b} to get ${a*b}.`]);
+  const x=grade+2,y=grade+4;extras.push([grade,grade,diff,`Solve: x + ${x} = ${y+x}.`,[`x = ${y}`,`x = ${x}`,`x = ${y+x}`,`x = ${y-x}`],`x = ${y}`,`Subtract ${x} from both sides, so x = ${y}.`]);
+ }
+ if(sub==='ICT')extras.push([grade,grade,diff,'Which action is safest when an unexpected message asks for your password?',['Reply with the password','Click every link','Do not share it and verify the sender','Forward it to everyone'],'Do not share it and verify the sender','Keep passwords private and check suspicious messages through a trusted route.']);
+ if(sub==='Biology')extras.push([grade,grade,diff,'What do organisms need energy for?',['Only to change colour','Life processes such as growth and movement','To stop all chemical reactions','Only to sleep'],'Life processes such as growth and movement','Organisms use energy for growth, repair, movement and other life processes.']);
+ if(sub==='Physics')extras.push([grade,grade,diff,'What is the SI unit of time?',['Metre','Second','Kilogram','Newton'],'Second','The SI base unit for time is the second (s).']);
+ if(sub==='Chemistry')extras.push([grade,grade,diff,'Which technique can separate a dissolved solid from a solution by removing the solvent?',['Evaporation','Filtration','Sieving','Magnetism'],'Evaporation','Evaporation removes solvent and leaves the dissolved solid behind.']);
+ if(sub==='Business')extras.push([grade,grade,diff,'Why does a business set objectives?',['To give it clear aims','To avoid making decisions','To remove all costs','To guarantee no competition'],'To give it clear aims','Objectives help guide decisions and measure progress.']);
+ if(sub==='English')extras.push([grade,grade,diff,'Which sentence is written in the past tense?',['I walk to school.','I will walk to school.','I walked to school.','I am walking to school.'],'I walked to school.','“Walked” is the past-tense form of “walk”.']);
+ return extras;
+}
+function makeQuestion(row){return {min:row[0],max:row[1],difficulty:row[2],q:row[3],opts:[...row[4]],answer:row[5],explain:row[6],subject};}
+function createQuestions(){
+ const grade=+ $('grade').value,diff=$('difficulty').value,n=+$('rounds').value;
+ let pool=(bank[subject]||[]).filter(r=>grade>=r[0]&&grade<=r[1]&&(diff==='Medium'||r[2]===diff));
+ if(pool.length<4)pool=(bank[subject]||[]).filter(r=>grade>=r[0]&&grade<=r[1]);
+ if(pool.length<4)pool=bank[subject].filter(r=>grade<=r[1]||grade>=r[0]);
+ let rows=pool.map(makeQuestion);
+ // Create additional on-grade practice items so each subject can support longer rounds.
+ for(const r of seededExtra(subject,grade,diff))rows.push(makeQuestion(r));
+ rows=rows.filter((q,i,a)=>a.findIndex(x=>x.q===q.q)===i);
+ rows=rows.sort(()=>Math.random()-.5);
+ // Shuffle answer options while preserving the correct answer.
+ rows=rows.map(q=>{q.opts=q.opts.sort(()=>Math.random()-.5);return q});
+ const out=[];while(out.length<n){out.push({...rows[out.length%rows.length],opts:[...rows[out.length%rows.length].opts]});if(out.length%rows.length===0)rows=rows.sort(()=>Math.random()-.5)}
+ return out;
+}
+function formatTime(s){if(s<=0)return '00:00';return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function updateScore(){ $('score').textContent=score;$('score').className=score<0?'score-neg':'score-pos';$('streak').textContent=`🔥 Streak: ${streak}` }
+function startGame(){
+ settings={subject,grade:+$('grade').value,difficulty:$('difficulty').value,mode,time:+$('time').value,rounds:+$('rounds').value};
+ questions=createQuestions();index=0;score=0;correct=0;wrong=0;streak=0;bestStreak=0;answered=false;seconds=settings.mode==='sprint'&&settings.time===0?60:settings.time;
+ $('setup').classList.add('hidden');$('results').classList.add('hidden');$('game').classList.remove('hidden');
+ $('gameInfo').textContent=`Grade ${settings.grade} · ${subject} · ${settings.difficulty}`;updateScore();renderQuestion();startTimer();
+}
+function startTimer(){clearInterval(timerId);if(settings.mode==='practice'||seconds===0){$('timer').textContent=settings.mode==='practice'?'∞': 'No limit';return}
+ $('timer').textContent=formatTime(seconds);timerId=setInterval(()=>{seconds--;$('timer').textContent=formatTime(seconds);if(seconds<=0){clearInterval(timerId);endGame(true)}},1000)}
+function renderQuestion(){
+ if(index>=questions.length){endGame(false);return}
+ answered=false;const q=questions[index];$('qcount').textContent=`${index+1} / ${questions.length}`;$('progress').style.width=`${index/questions.length*100}%`;
+ $('subjectTag').textContent=subject.toUpperCase();$('gradeTag').textContent=`GRADE ${settings.grade}`;$('diffTag').textContent=settings.difficulty.toUpperCase();$('question').textContent=q.q;
+ $('feedback').className='feedback hidden';$('feedback').textContent='';$('next').classList.add('hidden');
+ const letters=['A','B','C','D'];$('choices').innerHTML='';
+ q.opts.forEach((opt,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML=`<span class="letter">${letters[i]}</span><span></span>`;b.lastElementChild.textContent=opt;b.addEventListener('click',()=>chooseAnswer(opt,b));$('choices').appendChild(b)});
+ $('progress').style.width=`${index/questions.length*100}%`;
+}
+function chooseAnswer(opt,btn){
+ if(answered)return;answered=true;const q=questions[index],isRight=opt===q.answer;
+ document.querySelectorAll('.choice').forEach(b=>{b.disabled=true;if(b.lastElementChild.textContent===q.answer)b.classList.add('correct')});
+ const fb=$('feedback');fb.classList.remove('hidden');fb.className=`feedback ${isRight?'good':'bad'}`;
+ if(isRight){score+=100;correct++;streak++;bestStreak=Math.max(bestStreak,streak);fb.innerHTML=`<strong>✓ Correct! +100 points</strong><span></span>`}
+ else{score-=100;wrong++;streak=0;btn.classList.add('wrong');fb.innerHTML=`<strong>✕ Not quite. −100 points</strong><span></span>`}
+ fb.lastElementChild.textContent=`${isRight?'Great work! ':'Correct answer: '+q.answer+'. '}${q.explain}`;
+ updateScore();$('next').classList.remove('hidden');$('next').textContent=index===questions.length-1?'See results →':'Next question →';
+}
+$('next').addEventListener('click',()=>{if(!answered)return;index++;renderQuestion()});
+function endGame(timeUp){
+ clearInterval(timerId);$('game').classList.add('hidden');$('results').classList.remove('hidden');
+ const attempted=correct+wrong,acc=attempted?Math.round(correct/attempted*100):0;
+ $('resultIcon').textContent=score>=700?'🏆':score>=0?'✨':'💪';
+ $('resultTitle').textContent=timeUp?'Time is up!':score>=700?'Brilliant work!':score>=0?'Good effort!':'Keep practising!';
+ $('resultText').textContent=`Grade ${settings.grade} ${subject} · ${settings.difficulty} · ${settings.mode==='practice'?'Practice Mode':settings.mode==='sprint'?'Speed Sprint':'Classic Quiz'}. ${timeUp?'The timer ended your round.':'You finished the round.'} Keep learning and try to beat your score.`;
+ $('finalScore').textContent=score;$('correctN').textContent=correct;$('wrongN').textContent=wrong;$('accuracy').textContent=acc+'%';$('progress').style.width='100%';
+}
+function goHome(){clearInterval(timerId);$('game').classList.add('hidden');$('results').classList.add('hidden');$('setup').classList.remove('hidden')}
+$('start').addEventListener('click',()=>{if(!subject){$('setupMsg').textContent='Please choose a subject.';return}$('setupMsg').textContent='';startGame()});
+$('quit').addEventListener('click',goHome);$('home').addEventListener('click',goHome);$('again').addEventListener('click',startGame);
+</script>
+</body></html>
